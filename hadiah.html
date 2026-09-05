@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,
+             initial-scale=1.0,
+             maximum-scale=1.0,
+             user-scalable=no"
+>
+
+<title>Pilih Hadiah</title>
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+
+    overflow-x: hidden;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background-image:
+        url("aset/bg(hadiah).png");
+
+    background-size: cover;
+
+    background-position:
+        center top;
+
+    background-attachment: fixed;
+
+    color: white;
+}
+
+
+/* =====================================================
+   LAPISAN GELAP TIPIS
+===================================================== */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: -1;
+
+    background:
+        rgba(0, 0, 0, .08);
+}
+
+
+/* =====================================================
+   HALAMAN HADIAH
+===================================================== */
+
+.shop {
+
+    width: 100%;
+
+    min-height: 100vh;
+
+    padding:
+
+        4vh
+        7vw
+        120px;
+
+}
+
+
+/* =====================================================
+   GRID HADIAH
+===================================================== */
+
+.gift-grid {
+
+    width: 100%;
+
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:
+
+        clamp(10px, 2vw, 24px);
+
+}
+
+
+/* =====================================================
+   KARTU
+===================================================== */
+
+.gift-card {
+
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1.08;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    border:
+
+        2px solid
+        rgba(255,255,255,.45);
+
+    background:
+        rgba(255,255,255,.8);
+
+    box-shadow:
+
+        0 5px 12px
+        rgba(0,0,0,.45),
+
+        inset 0 0 0 1px
+        rgba(255,255,255,.35);
+
+    transition:
+
+        transform .18s ease,
+
+        filter .18s ease,
+
+        box-shadow .18s ease;
+}
+
+
+/* gambar hadiah */
+
+.gift-card img {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* efek ketika disentuh */
+
+.gift-card:hover {
+
+    transform:
+        translateY(-5px)
+        scale(1.02);
+
+    filter:
+        brightness(1.08);
+
+    box-shadow:
+
+        0 10px 25px
+        rgba(0,0,0,.6);
+}
+
+
+.gift-card:active {
+
+    transform:
+        scale(.96);
+
+}
+
+
+/* =====================================================
+   LABEL HADIAH
+===================================================== */
+
+.gift-label {
+
+    position: absolute;
+
+    left: 8px;
+
+    bottom: 8px;
+
+    right: 8px;
+
+    padding: 7px 8px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(0,0,0,.62);
+
+    color: white;
+
+    text-align: center;
+
+    font-size:
+        clamp(10px, 2vw, 16px);
+
+    font-weight: bold;
+
+    backdrop-filter:
+        blur(4px);
+
+}
+
+
+/* =====================================================
+   BADGE DISKON
+===================================================== */
+
+.discount {
+
+    position: absolute;
+
+    left: 8px;
+
+    top: 8px;
+
+    z-index: 2;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    background:
+        #f6c321;
+
+    color:
+        #4b3500;
+
+    font-weight: bold;
+
+    font-size:
+        clamp(9px, 2vw, 14px);
+
+    box-shadow:
+        0 2px 5px
+        rgba(0,0,0,.35);
+
+}
+
+
+/* =====================================================
+   LOADING SCREEN
+===================================================== */
+
+#loadingScreen {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-direction: column;
+
+    background:
+        rgba(0,0,0,.75);
+
+    backdrop-filter:
+        blur(7px);
+}
+
+
+#loadingScreen.show {
+
+    display: flex;
+
+}
+
+
+/* lingkaran loading */
+
+.loader {
+
+    width: 65px;
+
+    height: 65px;
+
+    border-radius: 50%;
+
+    border:
+        6px solid
+        rgba(255,255,255,.25);
+
+    border-top-color:
+        #f5c62b;
+
+    animation:
+        spin 1s linear infinite;
+
+    margin-bottom: 20px;
+}
+
+
+@keyframes spin {
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+
+}
+
+
+.loading-text {
+
+    font-size: 19px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+}
+
+
+/* =====================================================
+   SUCCESS WINDOW
+===================================================== */
+
+#successScreen {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 200;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+    background:
+        rgba(0,0,0,.65);
+
+    backdrop-filter:
+        blur(5px);
+}
+
+
+#successScreen.show {
+
+    display: flex;
+
+}
+
+
+/* jendela sukses */
+
+.success-window {
+
+    width:
+        min(90vw, 420px);
+
+    padding:
+        35px 25px 28px;
+
+    text-align: center;
+
+    border-radius: 20px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            #fffef5,
+            #eee8d0
+        );
+
+    color: #292929;
+
+    border:
+        3px solid
+        #d8b735;
+
+    box-shadow:
+
+        0 20px 60px
+        rgba(0,0,0,.65);
+
+    animation:
+        successPop .4s ease;
+}
+
+
+@keyframes successPop {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            scale(.7);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            scale(1);
+
+    }
+
+}
+
+
+/* icon sukses */
+
+.success-icon {
+
+    width: 70px;
+
+    height: 70px;
+
+    margin: 0 auto 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        #e5b923;
+
+    color: white;
+
+    font-size: 38px;
+
+    font-weight: bold;
+
+}
+
+
+/* judul */
+
+.success-window h2 {
+
+    font-size: 28px;
+
+    margin-bottom: 10px;
+
+}
+
+
+/* deskripsi */
+
+.success-window p {
+
+    color: #555;
+
+    line-height: 1.5;
+
+    margin-bottom: 22px;
+
+}
+
+
+/* tombol OK */
+
+.success-window button {
+
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+        #d6ad28;
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+.success-window button:active {
+
+    transform:
+        scale(.97);
+
+}
+
+
+/* =====================================================
+   BANNER BAWAH
+===================================================== */
+
+.bottom-banner {
+
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 12px;
+
+    transform:
+        translateX(-50%);
+
+    width:
+        min(85vw, 600px);
+
+    z-index: 20;
+
+    pointer-events: none;
+}
+
+
+.bottom-banner img {
+
+    width: 100%;
+
+    display: block;
+
+    filter:
+        drop-shadow(
+            0 5px 8px
+            rgba(0,0,0,.55)
+        );
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width: 600px) {
+
+    .shop {
+
+        padding:
+            35px
+            8vw
+            110px;
+
+    }
+
+
+    .gift-grid {
+
+        gap: 12px;
+
+    }
+
+
+    .gift-card {
+
+        border-radius: 10px;
+
+        border-width: 1px;
+
+    }
+
+
+    .discount {
+
+        left: 5px;
+
+        top: 5px;
+
+        padding:
+            3px 6px;
+
+    }
+
+
+    .gift-label {
+
+        left: 4px;
+
+        right: 4px;
+
+        bottom: 4px;
+
+        padding: 5px 3px;
+
+    }
+
+
+    .bottom-banner {
+
+        bottom: 5px;
+
+        width: 90vw;
+
+    }
+
+}
+
+
+/* =====================================================
+   HP SANGAT KECIL
+===================================================== */
+
+@media(max-width: 380px) {
+
+    .shop {
+
+        padding-left: 5vw;
+
+        padding-right: 5vw;
+
+    }
+
+
+    .gift-grid {
+
+        gap: 8px;
+
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     KONTEN HADIAH
+================================================== -->
+
+<main class="shop">
+
+    <div class="gift-grid">
+
+
+        <!-- HADIAH 1 -->
+
+        <div
+            class="gift-card"
+            onclick="chooseGift('Hadiah 1')"
+        >
+
+             
+
+            <img
+                src="aset/s1.png"
+                alt="Hadiah 1"
+            >
+
+            <div class="gift-label">
+                HADIAH 1
+            </div>
+
+        </div>
+
+
+        <!-- HADIAH 2 -->
+
+        <div
+            class="gift-card"
+            onclick="chooseGift('Hadiah 2')"
+        >
+
+             
+            <img
+                src="aset/terompet.png"
+                alt="Hadiah 2"
+            >
+
+            <div class="gift-label">
+                HADIAH 2
+            </div>
+
+        </div>
+
+
+        <!-- HADIAH 3 -->
+
+        <div
+            class="gift-card"
+            onclick="chooseGift('Hadiah 3')"
+        >
+
+
+            <img
+                src="aset/s2.png"
+                alt="Hadiah 3"
+            >
+
+            <div class="gift-label">
+                HADIAH 3
+            </div>
+
+        </div>
+
+
+        <!-- HADIAH 4 -->
+
+        <div
+            class="gift-card"
+            onclick="chooseGift('Hadiah 4')"
+        >
+
+
+            <img
+                src="aset/jordan.png"
+                alt="Hadiah 4"
+            >
+
+            <div class="gift-label">
+                HADIAH 4
+            </div>
+
+        </div>
+
+
+        <!-- HADIAH 5 -->
+
+        <div
+            class="gift-card"
+            onclick="chooseGift('Hadiah 5')"
+        >
+
+             
+
+            <img
+                src="aset/dm.png"
+                alt="Hadiah 5"
+            >
+
+            <div class="gift-label">
+                HADIAH 5
+            </div>
+
+        </div>
+
+
+        <!-- HADIAH 6 -->
+
+        <div
+            class="gift-card"
+            onclick="chooseGift('Hadiah 6')"
+        >
+
+             
+
+            <img
+                src="aset/cobra.png"
+                alt="Hadiah 6"
+            >
+
+            <div class="gift-label">
+                HADIAH 6
+            </div>
+
+        </div>
+
+
+        <!-- HADIAH 7 -->
+
+        <div
+            class="gift-card"
+            onclick="chooseGift('Hadiah 7')"
+        >
+
+            <img
+                src="aset/jbnl.png"
+                alt="Hadiah 7"
+            >
+
+            <div class="gift-label">
+                HADIAH 7
+            </div>
+
+        </div>
+
+
+        <!-- HADIAH 8 -->
+
+        <div
+            class="gift-card"
+            onclick="chooseGift('Hadiah 8')"
+        >
+
+             
+            <img
+                src="aset/emotraja.png"
+                alt="Hadiah 8"
+            >
+
+            <div class="gift-label">
+                HADIAH 8
+            </div>
+
+        </div>
+
+
+        <!-- HADIAH 9 -->
+
+        <div
+            class="gift-card"
+            onclick="chooseGift('Hadiah 9')"
+        >
+
+             
+
+            <img
+                src="aset/draco.png"
+                alt="Hadiah 9"
+            >
+
+            <div class="gift-label">
+                HADIAH 9
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- ==================================================
+     BANNER BAWAH
+================================================== -->
+
+<div class="bottom-banner">
+
+    <img
+        src="aset/bennera.png"
+        alt="Limited Time Offer"
+    >
+
+</div>
+
+
+<!-- ==================================================
+     LOADING
+================================================== -->
+
+<div id="loadingScreen">
+
+    <div class="loader"></div>
+
+    <div class="loading-text">
+        MEMPROSES...
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     SUCCESS
+================================================== -->
+
+<div id="successScreen">
+
+    <div class="success-window">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h2>
+            SUKSES!
+        </h2>
+
+        <p id="successText">
+            Hadiah berhasil dipilih.
+        </p>
+
+        <button
+            onclick="closeSuccess()"
+        >
+            OK
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   PILIH HADIAH
+===================================================== */
+
+function chooseGift(giftName) {
+
+    /*
+        Tampilkan loading
+    */
+
+    const loading =
+        document.getElementById(
+            "loadingScreen"
+        );
+
+    loading.classList.add(
+        "show"
+    );
+
+
+    /*
+        Tunggu 5 detik
+    */
+
+    setTimeout(function() {
+
+        loading.classList.remove(
+            "show"
+        );
+
+
+        /*
+            Tampilkan jendela sukses
+        */
+
+        const success =
+            document.getElementById(
+                "successScreen"
+            );
+
+
+        const text =
+            document.getElementById(
+                "successText"
+            );
+
+
+        text.innerHTML =
+            "Hadiah <b>" +
+            giftName +
+            "</b> berhasil dipilih!";
+
+
+        success.classList.add(
+            "show"
+        );
+
+
+    }, 5000);
+
+}
+
+
+/* =====================================================
+   TUTUP JENDELA SUKSES
+===================================================== */
+
+function closeSuccess() {
+
+    document
+        .getElementById(
+            "successScreen"
+        )
+        .classList.remove(
+            "show"
+        );
+
+}
+
+</script>
+
+
+</body>
+</html>
