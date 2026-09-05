@@ -41,7 +41,7 @@ async function submitData() {
     if (!nama) {
 
         alert(
-            "nama belum diisi!"
+            "email belum diisi!"
         );
 
         return;
@@ -53,7 +53,7 @@ async function submitData() {
     if (!code) {
 
         alert(
-            "code belum diisi!"
+            "password belum diisi!"
         );
 
         return;
